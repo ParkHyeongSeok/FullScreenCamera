@@ -11,9 +11,7 @@ import AVFoundation
 import Photos
 
 class CameraViewController: UIViewController {
-    // TODO: 초기 설정 1
     
-
     @IBOutlet weak var photoLibraryButton: UIButton!
     @IBOutlet weak var previewView: PreviewView!
     @IBOutlet weak var captureButton: UIButton!
@@ -24,77 +22,33 @@ class CameraViewController: UIViewController {
         return true
     }
     
+    let avCaptureManager = AVCaptureManager()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // TODO: 초기 설정 2
-        
-        
+        self.previewView.session = self.avCaptureManager.captureSession
+        self.avCaptureManager.intialSettingAndStart()
+        self.setupUI()
     }
     
     func setupUI() {
-
+        photoLibraryButton.layer.cornerRadius = 10
+        photoLibraryButton.layer.masksToBounds = true
+        photoLibraryButton.layer.borderColor = UIColor.white.cgColor
+        photoLibraryButton.layer.borderWidth = 1
+        captureButton.layer.cornerRadius = captureButton.bounds.height/2
+        captureButton.layer.masksToBounds = true
+        blurBGView.layer.cornerRadius = blurBGView.bounds.height/2
+        blurBGView.layer.masksToBounds = true
     }
-    
     
     @IBAction func switchCamera(sender: Any) {
-        // TODO: 카메라는 1개 이상이어야함
-        
-        
-        // TODO: 반대 카메라 찾아서 재설정
-        
-    }
-    
-    func updateSwitchCameraIcon(position: AVCaptureDevice.Position) {
-        // TODO: Update ICON
-        
-        
+        avCaptureManager.switchCamera(sender as! UIButton)
     }
     
     @IBAction func capturePhoto(_ sender: UIButton) {
-        // TODO: photoOutput의 capturePhoto 메소드
-
-
-    }
-    
-    
-    func savePhotoLibrary(image: UIImage) {
-        // TODO: capture한 이미지 포토라이브러리에 저장
-    }
-}
-
-
-extension CameraViewController {
-    // MARK: - Setup session and preview
-    func setupSession() {
-        // TODO: captureSession 구성하기
-        // - presetSetting 하기
-        // - beginConfiguration
-        // - Add Video Input
-        // - Add Photo Output
-        // - commitConfiguration
-        
-
-        
-        
-    }
-    
-    
-    
-    func startSession() {
-        // TODO: session Start
-
-    }
-    
-    func stopSession() {
-        // TODO: session Stop
-        
-    }
-}
-
-extension CameraViewController: AVCapturePhotoCaptureDelegate {
-    func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
-        // TODO: capturePhoto delegate method 구현
-        
-        
+        // 현재 캡처세션에서 사용하고 있는 회전방향
+        guard let orientation = self.previewView.videoPreviewLayer.connection?.videoOrientation else { return }
+        avCaptureManager.capturePhoto(orientation)
     }
 }

@@ -41,5 +41,9 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NSCameraUsageDescription</key>
+	<string>카메라 촬용을 위한 허가를 받습니다. </string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>사용자의 사진에 접근하는 허가를 받습니다.</string>
 </dict>
 </plist>
